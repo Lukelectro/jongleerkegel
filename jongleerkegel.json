@@ -1,0 +1,26 @@
+{
+    "parameterSets": {
+        "mini": {
+            "BOTHEIGHT": "80",
+            "BOTPUCKH": "5",
+            "BOTTH": "3",
+            "BOTTLE_WIDTH": "40",
+            "BOTWIDTH": "18",
+            "DOWELDIA": "3",
+            "HANDLEDIA_BOT": "15",
+            "HANDLEDIA_KNOB": "10",
+            "HANDLEHEIGHT": "120",
+            "HOLLOW": "true",
+            "KNOBDIA": "31",
+            "MBL": "10",
+            "MIDRING": "5",
+            "PWW": "0",
+            "SD": "3",
+            "SHD": "6",
+            "SHH": "5",
+            "TOL": "0.2",
+            "WALLTHICKNESS": "1"
+        }
+    },
+    "fileFormatVersion": "1"
+}
