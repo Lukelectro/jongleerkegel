@@ -1,15 +1,15 @@
-// grapje: Een getailleerde fles.
+// This botle looks more like a delphin club: 2 cones (blue and red) and a curve in the middle (green) 
 
-HEIGTH = 260;   // total height of bottle
-DIA0 = 60;      // diameter at bottom
+HEIGTH = 260;   // total height of bottle (100-350 ish, default 260)
+DIA0 = 50;      // diameter at bottom
 DIA1 = 70;      // diameter at beginning of curvy bit
-BULBYBIT=28/2;  // (target) radius of bulby bit (not exact)
+BULBYBIT=75/2;  // (target) radius of bulby bit (not exact)
 DIA2 = 70;      // diameter at top of bulby but
-DIA3 = 60;      // diameter at top of bottle / start of handle
+DIA3 = 25;      // diameter at top of bottle / start of handle
 
 // do not change below, these are calculated from total height
 HC1=HEIGTH/3;   
-HC2=HEIGTH/6;
+HC2=HEIGTH/2;
 HBB=HEIGTH-HC1-HC2;
 
 
