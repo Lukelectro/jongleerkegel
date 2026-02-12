@@ -1,4 +1,4 @@
-// This botle looks more like a delphin club: 2 cones (blue and red) and a curve in the middle (green) 
+// Body of a juggle club: 2 cones (blue and red) and a curve in the middle (green). Could also be a bottle.
 
 HEIGTH = 260;   // total height of bottle (100-350 ish, default 260)
 DIA0 = 50;      // diameter at bottom

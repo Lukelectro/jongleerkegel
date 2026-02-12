@@ -99,6 +99,32 @@
             "SHH": "5",
             "TOL": "0.2",
             "WALLTHICKNESS": "1"
+        },
+        "design default values": {
+            "BOTHEIGHT": "250",
+            "BOTPUCKH": "15",
+            "BOTSTYLE": "0",
+            "BOTTH": "3",
+            "BOTTLE_WIDTH": "75",
+            "BOTWIDTH": "35",
+            "CBS_DIA1": "20",
+            "CBS_DIA2": "20",
+            "CBS_HIGHCYLHEIGHT": "20",
+            "CBS_LOWCYLHEIGHT": "20",
+            "DOWELDIA": "18",
+            "HANDLEDIA_BOT": "30",
+            "HANDLEDIA_KNOB": "20",
+            "HANDLEHEIGHT": "250",
+            "HOLLOW": "true",
+            "KNOBDIA": "35",
+            "MBL": "40",
+            "MIDRING": "5",
+            "PWW": "0",
+            "SD": "3",
+            "SHD": "6",
+            "SHH": "5",
+            "TOL": "0.2",
+            "WALLTHICKNESS": "1"
         }
     },
     "fileFormatVersion": "1"

@@ -1,27 +1,21 @@
-// dit is een kladversie van een jongleerkegel - nog niet printbaar.
+// dit is een kladversie van een jongleerkegel - nog niet geprint.
 
 // Note/idea: 
-// print all parts seperately, bottle and neck in vase mode. (In something sturdy but with some give. PETG perhaps? TPU for the handle?)
-// Bottle needs a solid botom, neck perhaps a solid bit at the top.
-// Add a bumper to the bottom and the knob. (printed in TPU or other soft material)
+// print all parts seperately, bottle and neck in vase mode. (In something sturdy but with some give. PETG perhaps? TPU for the handle, knob and top (puck at the bottom)?)
 // Use a calibration piece in the middle between bottle and neck, weight calibration. Printed in PETG? Does not need to be soft, needs some weight.
 // Add a wooden dowel/rod through all (18 mm is een standaard diameter bij praxis, maar ik weet niet welke diameter er in het origineel zit. Op het oog zou het kunnen)
-
-// Idee: de puck op de onderkant kan ook op mijn huidige kegels, al veranderd dan het gewicht en het zwaartepunt. Zwaartepunt is corrigeerbaar door ook de handle te wrappen en/of knop te verzwaren. Dan wordt wel de hele kegel zwaarder... Of ik zou de puck heel licht moeten maken (Weinig infill, 2 outer shells ipv 3)
 
 // See "how it is made" for Henry's delphin (circus expert visits their factory).
 
 //  How does the calibration middle piece work? Infill for more or less weight? addable weight? -- How about a longer piece for more weight, if more infill does not cut it?
 // Also: how to assemble? Middle bit to wooden dowel (glue?) and bottle/handle (it is locked in since both ends are fixed to the dowel by a screw through the knob and bottom puck. So a bit of (colored?) tape over it should be enough)
 
-// Hah. Make it into a fuly parametric open source open hardware juggle pin :P like the open source violin XKCD jokes about. With a Height and a BOTTLEWIDTH etc.
+// Hah. Make it into a fuly parametric open source open hardware juggle pin :P like the open source violin XKCD jokes about (https://xkcd.com/743/).
 
 // TODO:
 // * maybe pre-calculate weight distribution somehow? Saves on printing, but difficult. (And weight distr. can be changed with knob, puck, and middle bit, withouth re-printing the large bits)
 // * tune size to printer limits (250 height is too much for my home printer, could maybe use the UM2+ extended at the makerspace (Zmax 305)?)
-// * iets om los de onderdelen als stls te exporteren, ipv alles ineens
 // * misschien settings voor preview en render verschillend, preview de exploded view en render de (gekozen) printbare onderdelen.
-// *TODO: Fles en handvat toch ook hol maken (Offset), want dan hoeft het niet per se in vase mode.abs
 // *TODO: kleiner schaalmodel printen, dan kan het met foto op printables als work in progress én krijg ik er een beetje gevoel voor. Schaalmodel kan een stukje draadeind of kleiner houtje als dowel middendoor? Of zelfs een lange schroef?
 
 // bottle height
@@ -72,7 +66,7 @@ BOTTH = 3;
 PWW = 0; 
 
 // style of bottle: 0= 3 piece clasic, 1= only curve, 2 = curve on top, 3 = curve on botom, 4 = no curve / lowpoly, 5 = equal sections, 6=middlebulb, 7 = custom
-BOTSTYLE = 7; // [0:6]
+BOTSTYLE = 0; // [0:6]
  // limit choice in customizer panel: for a custom bottle edit the .scad
 /*hidden*/
 
