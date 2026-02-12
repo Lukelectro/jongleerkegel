@@ -24,32 +24,69 @@
 // *TODO: Fles en handvat toch ook hol maken (Offset), want dan hoeft het niet per se in vase mode.abs
 // *TODO: kleiner schaalmodel printen, dan kan het met foto op printables als work in progress én krijg ik er een beetje gevoel voor. Schaalmodel kan een stukje draadeind of kleiner houtje als dowel middendoor? Of zelfs een lange schroef?
 
+// bottle height
+BOTHEIGHT   = 250;     
+// handle height. Total height is sum of bottle, handle, knob and puck - the amount the bottle is sunk into the puck and the amount the knob is sunk into the handle
+HANDLEHEIGHT = 250;
+// handle diameter, at the bottle end
+HANDLEDIA_BOT = 30;
+// handle diameter, at the knob end
+HANDLEDIA_KNOB = 20;
+// width of bottle (widest bit is slightly narrower then this. TODOWONTFIX)
+BOTTLE_WIDTH = 75;
+// bottom width (puck is slightly wider) (min size 15mm, but that is already ridiculously small)
+BOTWIDTH = 35;
+// bottom puck height
+BOTPUCKH = 15;
+//Diameter of top ball/knob
+KNOBDIA = 35;          
 
-BOTHEIGHT   = 250;      // bottle height
-HANDLEHEIGHT = 250;     // handle height. Total height is sum of bottle, handle, knob and puck - the amount the bottle is sunk into the puck and the amount the knob is sunk into the handle
-HANDLEDIA_BOT = 30;    // handle diameter, at the bottle end
-HANDLEDIA_KNOB = 20;   // handle diameter, at the knob end
-BOTTLE_WIDTH = 75;     // width of bottle (widest bit is slightly narrower then this. TODOWONTFIX)
-BOTWIDTH = 35;         // bottom width (puck is slightly wider) (min size 15mm, but that is already ridiculously small)
-BOTPUCKH = 15;         // bottom puck height
-KNOBDIA = 31;          // diameter knob
+//Diameter of wooden dowel (trough the middle over full length: BOTHEIGHT+HANDLEHEIGHT+MIDRING);
+DOWELDIA = 18;
+// "length" (width, but it is in the length direction of the club) of middle ring.
+MIDRING = 5;
 
-DOWELDIA = 18;          // diameter of wooden dowel
-MIDRING = 5;            // length of middle ring.
-MBL = 40; // middle bit length, to also tune weight, but do always keep at least 30 mm or so, because it needs to connect to the botle and handle.
-//saw wooden dowel to length BOTHEIGHT+HANDLEHEIGHT+MIDRING
-WALLTHICKNESS = 1; // wall thickness for printing. (still needed of middle bit when priting solid)
-TOL = 0.2; // printing tolerance. Holes that a printed part has to fit in are made larger by this amout.
+// middle bit length, to also tune weight, but do always keep at least 30 mm or so, because it needs to connect to the botle and handle.
+MBL = 40; 
+// wall thickness for printing. (In vase mode set this in slicer and put that value here too. In holow mode, set it here)
+WALLTHICKNESS = 1; 
+// printing tolerance. Holes that a printed part has to fit in are made larger by this amount.
+TOL = 0.2; 
 
-//screw to mount bottom puck and knob to the wooden dowel that passes throght the middle
-  SD = 3;  // screw dia
-  SHD = 6; // screw head dia
-  SHH = 5; // screw head height. It is inset to 2x this height (so, if it is a flat head screw maybe overstate this, so it is inset enough. Or TODO change this var to mean inset...)
+//screw to mount bottom puck and knob to the wooden dowel that passes throght the middle, diameter of screw
+SD = 3;  
+//diameter of screwhead
+SHD = 6;
+// screw head height. It is inset to 2x this height (so, if it is a flat head screw maybe overstate this, so it is inset enough. Or TODO change this var to mean inset...)
+SHH = 5;
 
-HOLLOW = true; // holow or solid bottle/handle pieces? (solid to print in vase mode or hollow to print directly)
-BOTTH = 3; // bottom thickness when hollow
+// holow or solid bottle/handle pieces? (solid to print in vase mode or hollow to print directly)
+HOLLOW = true; 
 
-PWW = 0; // print which one? 0 = all, 1 = bottle, 2 = handle, 3 = puck, 4 = middlebit, 5= knob
+//why are boolean check boxes not supported by thingiverse? Rather: Make this into another variable then...
+
+// bottom thickness when hollow
+BOTTH = 3;
+
+// print which one? 0 = all, 1 = bottle, 2 = handle, 3 = puck, 4 = middlebit, 5= knob
+PWW = 0; 
+
+// style of bottle: 0= 3 piece clasic, 1= only curve, 2 = curve on top, 3 = curve on botom, 4 = no curve / lowpoly, 5 = equal sections, 6=middlebulb, 7 = custom
+BOTSTYLE = 7; // [0:6]
+ // limit choice in customizer panel: for a custom bottle edit the .scad
+/*hidden*/
+
+// A custom bottle can be defined in ways that don't work, there is no sanity checking, please use your own.
+
+// Custom bottle style: heigth of lower cylinder
+CBS_LOWCYLHEIGHT = 20;  
+// Custom bottle style: heigth of upper cylinder
+CBS_HIGHCYLHEIGHT = 20;  
+//Custom bottle style: Diameter of connection to lower part of bulb
+CBS_DIA1 = 20; 
+//Custom bottle style: Diameter of connection to upper part of bulb
+CBS_DIA2 = 20; 
+
 
 if($preview){
 translate([0,0,BOTPUCKH*2]) bottle();
@@ -123,15 +160,54 @@ module middlebit(){
  module bottle(){
      // This botle looks more like a juggle club bottle: 2 cones and a curved bit in the middle conecting them. Other option would be just the curved bit, but longer.
 
-DIA1 = BOTTLE_WIDTH-5;      // diameter at beginning of curvy bit
-DIA2 = BOTTLE_WIDTH-5;      // diameter at top of bulby bit
-
 // do not change below, these are calculated from total height
-     // or mayeb tune them a bit to tune center of gravity, but make sure the total is still OK
-HC1=BOTHEIGHT/3;   // Height of lower cylinder 
-HC2=BOTHEIGHT/2;   // Height of upper cylinder
-HBB=BOTHEIGHT-HC1-HC2;  // remaining height is height of curvy bulby bit
+// or maybe tune them a bit to tune center of gravity, but make sure the total is still OK
+// Orr... change style with global parameter in customizer!
 
+//conditional on bottle style:
+//HC1 is height of lower cylinder
+HC1 = BOTSTYLE==1? 0
+    : BOTSTYLE==2? BOTHEIGHT/2
+    : BOTSTYLE==3? 0
+    : BOTSTYLE==4? BOTHEIGHT/2
+    : BOTSTYLE==5? BOTHEIGHT/3
+    : BOTSTYLE==6? BOTHEIGHT/3
+    : BOTSTYLE==7? CBS_LOWCYLHEIGHT
+    : BOTHEIGHT/3; // default / bottle style 0
+
+// HC2 is height of upper cylinder     
+HC2 = BOTSTYLE==1? 0
+    : BOTSTYLE==2? 0
+    : BOTSTYLE==3? BOTHEIGHT/2
+    : BOTSTYLE==4? BOTHEIGHT/2
+    : BOTSTYLE==5? BOTHEIGHT/3
+    : BOTSTYLE==6? BOTHEIGHT/3
+    : BOTSTYLE==7? CBS_HIGHCYLHEIGHT
+    : BOTHEIGHT/2;
+     
+//DIA1 is diameter of bottom end of curvy bit
+DIA1 = BOTSTYLE==1? BOTWIDTH
+     : BOTSTYLE==2? BOTTLE_WIDTH-5
+     : BOTSTYLE==3? BOTWIDTH    
+     : BOTSTYLE==4? BOTTLE_WIDTH
+     : BOTSTYLE==5? BOTTLE_WIDTH-5
+     : BOTSTYLE==6? HANDLEDIA_BOT
+     : BOTSTYLE==7? CBS_DIA1
+     : BOTTLE_WIDTH-5;
+     
+//DIA2 is diameter of top end of curvy bit
+DIA2 = BOTSTYLE==1? HANDLEDIA_BOT 
+     : BOTSTYLE==2? HANDLEDIA_BOT
+     : BOTSTYLE==3? BOTTLE_WIDTH-5
+     : BOTSTYLE==4? BOTTLE_WIDTH
+     : BOTSTYLE==5? BOTTLE_WIDTH-5
+     : BOTSTYLE==6? BOTWIDTH
+     : BOTSTYLE==7? CBS_DIA2
+     : BOTTLE_WIDTH-5;   
+
+HBB=BOTHEIGHT-HC1-HC2;  // Height of curvy bit in the middle of the bottle is what remains after HC1 and HC2 have been substrated from total heigth of bottle, in all styles.
+
+        
 
 points = [[DIA1/2,0+HC1],[BOTTLE_WIDTH/2,HC1+HBB/2],[DIA2/2,HC1+HBB]];
 
