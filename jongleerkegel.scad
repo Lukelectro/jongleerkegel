@@ -23,7 +23,9 @@ BOTHEIGHT   = 250;
 // handle height. Total height is sum of bottle, handle, knob and puck - the amount the bottle is sunk into the puck and the amount the knob is sunk into the handle
 HANDLEHEIGHT = 250;
 // handle diameter, at the bottle end
-HANDLEDIA_BOT = 30;
+HANDLEDIA_BOT = 35;
+// Bottle diameter, at the handle end -- if I want to fit batteries/electronics into it, this needs to be somewhat wide, yet the handle should still be small-ish. So the middlering converts
+BOTDIA_HANDLE = 45;
 // handle diameter, at the knob end
 HANDLEDIA_KNOB = 20;
 // width of bottle (widest bit is slightly narrower then this. TODOWONTFIX)
@@ -143,9 +145,10 @@ module middlebit(){
     difference(){
         union(){
         //2x WT, there is a wall each side.
-        translate([0,0,-MBL/2]) cylinder(d=HANDLEDIA_BOT-TOL - 2*WALLTHICKNESS, h=MBL);
+        translate([0,0,0]) cylinder(d=HANDLEDIA_BOT-TOL - 2*WALLTHICKNESS, h=MBL/2);
+        translate([0,0,-MBL/2]) cylinder(d=BOTDIA_HANDLE-TOL - 2*WALLTHICKNESS, h=MBL/2);
         //Middle bit is 1 wallthickness thicker again on both sides. So it protrudes by one WT from the bottle and handle.
-        translate([0,0,-MIDRING/2]) cylinder(d=HANDLEDIA_BOT+2*WALLTHICKNESS, h=MIDRING);
+        translate([0,0,-MIDRING/2]) cylinder(d=BOTDIA_HANDLE+2*WALLTHICKNESS, h=MIDRING);
             }
         translate([0,0,-MBL/2-1]) cylinder(d=DOWELDIA+TOL,h=MBL+2);
         }
@@ -190,8 +193,8 @@ DIA1 = BOTSTYLE==1? BOTWIDTH
      : BOTTLE_WIDTH-5;
      
 //DIA2 is diameter of top end of curvy bit
-DIA2 = BOTSTYLE==1? HANDLEDIA_BOT 
-     : BOTSTYLE==2? HANDLEDIA_BOT
+DIA2 = BOTSTYLE==1? BOTDIA_HANDLE
+     : BOTSTYLE==2? BOTDIA_HANDLE
      : BOTSTYLE==3? BOTTLE_WIDTH-5
      : BOTSTYLE==4? BOTTLE_WIDTH
      : BOTSTYLE==5? BOTTLE_WIDTH-5
@@ -219,7 +222,7 @@ curvepoints = [for (i=[0:0.05:1]) bezier(points,i) ];
                 y=y1+((y2-y1)*t)
                 ) ([x,y]);
 
-bottlepoly = concat ([[0,0],[BOTWIDTH/2,0]],curvepoints,[[HANDLEDIA_BOT/2,BOTHEIGHT],[0,BOTHEIGHT]]);
+bottlepoly = concat ([[0,0],[BOTWIDTH/2,0]],curvepoints,[[BOTDIA_HANDLE/2,BOTHEIGHT],[0,BOTHEIGHT]]);
 
 difference(){
     
@@ -230,10 +233,10 @@ if(HOLLOW){
     difference(){ 
     polygon(bottlepoly);
     offset(-WALLTHICKNESS) polygon(bottlepoly);
-    translate([-WALLTHICKNESS,BOTHEIGHT-WALLTHICKNESS*2]) square([HANDLEDIA_BOT/2,WALLTHICKNESS*3]);
+    translate([-WALLTHICKNESS,BOTHEIGHT-WALLTHICKNESS*2]) square([BOTDIA_HANDLE/2,WALLTHICKNESS*3]);
     translate([-WALLTHICKNESS,WALLTHICKNESS]) square([WALLTHICKNESS*3,BOTHEIGHT]);
     }
-    #polygon([[BOTWIDTH/2+WALLTHICKNESS*0.8,6],[BOTWIDTH/2,0],[BOTWIDTH/2-7,0]]); // strengthen edge
+    polygon([[BOTWIDTH/2+WALLTHICKNESS*0.8,6],[BOTWIDTH/2,0],[BOTWIDTH/2-7,0]]); // strengthen edge
     }
     cylinder(d=BOTWIDTH,h=BOTTH); // solid bottom
     }else
@@ -246,7 +249,7 @@ if(HOLLOW){
 
 module handle(){
     if (HOLLOW){
-    rotate_extrude() #polygon([[0,0],[HANDLEDIA_BOT/2,0],[HANDLEDIA_KNOB/2,HANDLEHEIGHT],[HANDLEDIA_KNOB/2-WALLTHICKNESS,HANDLEHEIGHT],[HANDLEDIA_BOT/2-WALLTHICKNESS,0]]);
+    rotate_extrude() polygon([[0,0],[HANDLEDIA_BOT/2,0],[HANDLEDIA_KNOB/2,HANDLEHEIGHT],[HANDLEDIA_KNOB/2-WALLTHICKNESS,HANDLEHEIGHT],[HANDLEDIA_BOT/2-WALLTHICKNESS,0]]);
 
 } else
 cylinder(d1=HANDLEDIA_BOT,d2=HANDLEDIA_KNOB,h=HANDLEHEIGHT);
