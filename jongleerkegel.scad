@@ -226,12 +226,14 @@ difference(){
     // TODO: now bottlepoly containts the full 2d shape of the bottle, it can be made hollow as well, so there is no need to specify vase mode printing (while vase mode printing remains possible still)
 
 if(HOLLOW){
-    rotate_extrude()
+    rotate_extrude(angle=360){
     difference(){ 
     polygon(bottlepoly);
     offset(-WALLTHICKNESS) polygon(bottlepoly);
     translate([-WALLTHICKNESS,BOTHEIGHT-WALLTHICKNESS*2]) square([HANDLEDIA_BOT/2,WALLTHICKNESS*3]);
     translate([-WALLTHICKNESS,WALLTHICKNESS]) square([WALLTHICKNESS*3,BOTHEIGHT]);
+    }
+    #polygon([[BOTWIDTH/2+WALLTHICKNESS*0.8,6],[BOTWIDTH/2,0],[BOTWIDTH/2-7,0]]); // strengthen edge
     }
     cylinder(d=BOTWIDTH,h=BOTTH); // solid bottom
     }else
