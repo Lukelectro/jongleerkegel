@@ -1,5 +1,9 @@
 // dit is een kladversie van een jongleerkegel - nog niet geprint.
 
+// standard juggle clubs are 52 cm and weight about 200 grams - 240 grams. Slim clubs spin faster. Shorter clubs spin faster. Lighter clubs spin faster. Kids clubs are shorter and wider and lighter, and do not spin faster
+
+// So for a club that fits a standard backpack, it can be shorter, wider, and about the same weight, to
+
 // Note/idea: 
 // print all parts seperately, bottle and neck in vase mode. (In something sturdy but with some give. PETG perhaps? TPU for the handle, knob and top (puck at the bottom)?)
 // Use a calibration piece in the middle between bottle and neck, weight calibration. Printed in PETG? Does not need to be soft, needs some weight.
@@ -50,7 +54,7 @@ WALLTHICKNESS = 1;
 TOL = 0.2; 
 
 //screw to mount bottom puck and knob to the wooden dowel that passes throght the middle, diameter of screw
-SD = 3;  
+SD = 3.5;  
 //diameter of screwhead
 SHD = 6;
 // screw head height. It is inset to 2x this height (so, if it is a flat head screw maybe overstate this, so it is inset enough. Or TODO change this var to mean inset...)

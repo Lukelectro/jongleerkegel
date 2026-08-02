@@ -75,6 +75,7 @@
             "WALLTHICKNESS": "1"
         },
         "mini": {
+            "BOTDIA_HANDLE": "15",
             "BOTHEIGHT": "80",
             "BOTPUCKH": "0",
             "BOTSTYLE": "0",
@@ -88,7 +89,7 @@
             "DOWELDIA": "5",
             "HANDLEDIA_BOT": "13",
             "HANDLEDIA_KNOB": "9",
-            "HANDLEHEIGHT": "81",
+            "HANDLEHEIGHT": "71",
             "HOLLOW": "true",
             "KNOBDIA": "20",
             "MBL": "10",
@@ -100,13 +101,14 @@
             "TOL": "0.2",
             "WALLTHICKNESS": "1"
         },
-        "design default values": {
-            "BOTHEIGHT": "250",
+        "fit_backbak": {
+            "BOTDIA_HANDLE": "35",
+            "BOTHEIGHT": "200",
             "BOTPUCKH": "15",
             "BOTSTYLE": "0",
             "BOTTH": "3",
-            "BOTTLE_WIDTH": "75",
-            "BOTWIDTH": "35",
+            "BOTTLE_WIDTH": "85",
+            "BOTWIDTH": "52",
             "CBS_DIA1": "20",
             "CBS_DIA2": "20",
             "CBS_HIGHCYLHEIGHT": "20",
@@ -114,7 +116,7 @@
             "DOWELDIA": "18",
             "HANDLEDIA_BOT": "30",
             "HANDLEDIA_KNOB": "20",
-            "HANDLEHEIGHT": "250",
+            "HANDLEHEIGHT": "190",
             "HOLLOW": "true",
             "KNOBDIA": "35",
             "MBL": "40",
