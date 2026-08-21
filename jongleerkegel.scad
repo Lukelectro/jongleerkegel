@@ -142,7 +142,7 @@ difference(){
         sphere(d=KNOBDIA);
         translate([0,0,-0.5*KNOBDIA-1]) cylinder(d=SD,h=KNOBDIA+2);
         translate([0,0,0.5*KNOBDIA-(2*SHH)]) cylinder(d1=SHD,d2=SHD+2,h=SHH*4);
-        translate([0,0,-0.5*KNOBDIA]) cylinder(d1=HANDLEDIA_KNOB+1,d2=HANDLEDIA_KNOB+TOL/2,h=5);    
+        translate([0,0,-0.5*KNOBDIA]) cylinder(d1=HANDLEDIA_KNOB+1,d2=HANDLEDIA_KNOB+TOL/2,h=8);    
             }
         }
         
