@@ -36,8 +36,8 @@ HANDLEDIA_KNOB = 20;
 BOTTLE_WIDTH = 75;
 // bottom width (puck is slightly wider) (min size 15mm, but that is already ridiculously small)
 BOTWIDTH = 35;
-// bottom puck height
-BOTPUCKH = 15;
+// bottom puck height (Minimum 10, because screw is inset 6)
+BOTPUCKH = 12;
 //Diameter of top ball/knob
 KNOBDIA = 35;          
 
@@ -57,8 +57,6 @@ TOL = 0.2;
 SD = 3.5;  
 //diameter of screwhead
 SHD = 6;
-// screw head height. It is inset to 2x this height (so, if it is a flat head screw maybe overstate this, so it is inset enough. Or TODO change this var to mean inset...)
-SHH = 5;
 
 // holow or solid bottle/handle pieces? (solid to print in vase mode or hollow to print directly)
 HOLLOW = true; 
@@ -121,21 +119,21 @@ translate([0,0,0]) knob();
     }
 }
 
-// botom puck:
+// botom puck (Print in TPU with low infill, and thin walls, maybe 1 or 2 perimeters instead of 3):
 module bottompuck(){
-rotate_extrude()
+    SHH=3; //screw head height. *2 is inset, but 6 is OK
 difference(){
-    union(){
-        translate([SD/2,0,0]) // 1.5 because 3mm screw
-        square([(BOTWIDTH-SD)/2, BOTPUCKH]); // 1.5 because 3mm screw
-        translate([BOTWIDTH/2,BOTPUCKH/2]) circle(BOTPUCKH/2);
-        }
+        cylinder(d1=BOTWIDTH*1.1,d2=BOTWIDTH*1.2,h=BOTPUCKH);
+        cylinder(d=SD,h=BOTPUCKH); // schroefgat
+        rotate_extrude(){
         polygon([[0,0],[0,SHH*2],[SHD/2,SHH*2],[SHD,0],[0,0]]); // sunk screwhole
-        polygon([[0,BOTPUCKH],[1+BOTWIDTH/2,BOTPUCKH],[0.5*TOL+BOTWIDTH/2,BOTPUCKH-3],[0,BOTPUCKH-3]]); // #square([BOTWIDTH-SD/2,3]); // sunk hole for bottom of bottle
-    }
+        polygon([[0,BOTPUCKH],[1+BOTWIDTH/2,BOTPUCKH],[0.5*TOL+BOTWIDTH/2,BOTPUCKH-3],[0,BOTPUCKH-3]]);//sunk bottle 
+        }
+}
 }
     
     module knob(){
+         SHH=6; //SHH=screw head height. *2 is inset. Leave at 5 or 6 or so.
         difference(){
         sphere(d=KNOBDIA);
         translate([0,0,-0.5*KNOBDIA-1]) cylinder(d=SD,h=KNOBDIA+2);
