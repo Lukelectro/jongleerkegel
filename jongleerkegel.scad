@@ -17,10 +17,8 @@
 // Hah. Make it into a fuly parametric open source open hardware juggle pin :P like the open source violin XKCD jokes about (https://xkcd.com/743/).
 
 // TODO:
-// * maybe pre-calculate weight distribution somehow? Saves on printing, but difficult. (And weight distr. can be changed with knob, puck, and middle bit, withouth re-printing the large bits)
 // * tune size to printer limits (250 height is too much for my home printer, could maybe use the UM2+ extended at the makerspace (Zmax 305)?)
-// * misschien settings voor preview en render verschillend, preview de exploded view en render de (gekozen) printbare onderdelen.
-// *TODO: kleiner schaalmodel printen, dan kan het met foto op printables als work in progress én krijg ik er een beetje gevoel voor. Schaalmodel kan een stukje draadeind of kleiner houtje als dowel middendoor? Of zelfs een lange schroef?
+
 
 // bottle height
 BOTHEIGHT   = 250;     
