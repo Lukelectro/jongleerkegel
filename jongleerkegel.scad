@@ -29,7 +29,7 @@ HANDLEDIA_BOT = 35;
 // Bottle diameter, at the handle end -- if I want to fit batteries/electronics into it, this needs to be somewhat wide, yet the handle should still be small-ish. So the middlering converts
 BOTDIA_HANDLE = 45;
 
-// handle diameter, at the knob end
+// handle diameter, at the knob end, must be equal or smaller then at the bottle end
 HANDLEDIA_KNOB = 20;
 
 // width of bottle (widest bit is slightly narrower then this. TODOWONTFIX)
@@ -47,7 +47,7 @@ DOWELDIA = 18; // actually 18mm wood rod is slightly under, but if the printer o
 MIDRING = 5;
 
 // middle bit length, to also tune weight, but do always keep at least 30 mm or so, because it needs to connect to the botle and handle.
-MBL = 40; 
+MBL = 25; 
 // wall thickness for printing. (In vase mode set this in slicer and put that value here too. In holow mode, set it here)
 WALLTHICKNESS = 1; 
 // printing tolerance. Holes that a printed part has to fit in are made larger by this amount.
@@ -87,10 +87,11 @@ CBS_DIA2 = 20;
 
 
 if($preview){
-translate([0,0,BOTPUCKH*2]) bottle();
-translate([0,0,BOTPUCKH*2+BOTHEIGHT+MBL]) middlebit(); //weight calibration piece in the middle
-translate([0,0,BOTPUCKH*2+BOTHEIGHT+MBL+MBL]) handle();
-translate([0,0,BOTPUCKH*2+BOTHEIGHT+MBL+MBL+HANDLEHEIGHT+KNOBDIA*0.75]) knob();
+    SPLODED = 1; // what distance for exploded view? (Set to 0 for assembled view, 10 or up for exploded view)
+%translate([0,0,BOTPUCKH-3+SPLODED]) bottle();
+translate([0,0,BOTPUCKH-3+BOTHEIGHT+0.5*MIDRING+2*SPLODED]) middlebit(); //weight calibration piece in the middle
+%translate([0,0,BOTPUCKH-3+BOTHEIGHT+MIDRING+3*SPLODED]) handle();
+translate([0,0,BOTPUCKH-3+BOTHEIGHT+MIDRING+HANDLEHEIGHT+0.33*KNOBDIA+4*SPLODED]) knob();
 bottompuck();
 }
 else
@@ -147,10 +148,10 @@ module middlebit(){
     difference(){
         union(){
         //2x WT, there is a wall each side.
-        translate([0,0,0]) cylinder(d1=HANDLEDIA_BOT-2*TOL - 2*WALLTHICKNESS, d2=HANDLEDIA_KNOB-TOL , h=MBL/2);
-        translate([0,0,-MBL/2]) cylinder(d2=BOTDIA_HANDLE-TOL - 2*WALLTHICKNESS, d1=DOWELDIA+2*WALLTHICKNESS, h=MBL/2);
+        translate([0,0,MIDRING/2]) cylinder(d1=HANDLEDIA_BOT-2*TOL - 2*WALLTHICKNESS, d2=(HANDLEDIA_BOT-2*TOL-2*WALLTHICKNESS)-(0.5*MBL*(HANDLEDIA_BOT-HANDLEDIA_KNOB)/HANDLEHEIGHT)-4*TOL , h=MBL/2-MIDRING/2);// something with slope and distance, and a bit of extra tolerance at the top
+        translate([0,0,-MBL/2]) cylinder(d2=BOTDIA_HANDLE-TOL - 2*WALLTHICKNESS, d1=(BOTDIA_HANDLE-TOL-2*WALLTHICKNESS)*0.8, h=MBL/2-MIDRING/2);
         //Middle bit is 1 wallthickness thicker again on both sides. So it protrudes by one WT from the bottle and handle.
-        translate([0,0,-MIDRING/2]) cylinder(d=BOTDIA_HANDLE+2*WALLTHICKNESS, h=MIDRING);
+        translate([0,0,-MIDRING/2]) cylinder(d1=BOTDIA_HANDLE+2*WALLTHICKNESS,d2=HANDLEDIA_BOT+2*WALLTHICKNESS, h=MIDRING);
             }
         translate([0,0,-MBL/2-1]) cylinder(d=DOWELDIA+TOL,h=MBL+2);
         }
