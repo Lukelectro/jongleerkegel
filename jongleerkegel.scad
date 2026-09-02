@@ -120,13 +120,15 @@ translate([0,0,0]) knob();
     }
 }
 
-// botom puck (Print in TPU with low infill)
+// botom puck (Print in TPU with NO infill or low infill and no gap fill)
 module bottompuck(){ // from playjuggling bumpers, modified
     $fs=0.5;
      SHH=2; //screw head height. +3 for inset
  difference(){
         union(){
-        cylinder(d1=BOTWIDTH*1.1+BOTPUCKH/2,d2=BOTWIDTH*1.1,h=BOTPUCKH);
+        cylinder(d1=BOTWIDTH*1.1+BOTPUCKH/6,d2=BOTWIDTH*1.1,h=BOTPUCKH);
+            //thin extra slice, for printability (else loose extrusions on the side)
+            cylinder(d=BOTWIDTH*1.1+BOTPUCKH/1.5,h=0.4);
                         
         // buitenrand bumpers    
         for(i=[0:18:360]){ 
@@ -146,7 +148,7 @@ module bottompuck(){ // from playjuggling bumpers, modified
         }
             // holes for more flexibility:
         for(i=[0:36:360]){
-            rotate([0,0,(i+18)]) translate([BOTWIDTH/3.5,0,-1]) cylinder(d=BOTWIDTH/6.5,h=BOTPUCKH+2);
+            rotate([0,-10,(i+18)]) translate([BOTWIDTH/3.5,0,-5]) cylinder(d1=BOTWIDTH/6.5,d2=BOTWIDTH/8,h=BOTPUCKH+5);
             rotate([0,-10,i]) translate([BOTWIDTH/2.2,0,-5]) cylinder(d1=BOTWIDTH/5, d2=(BOTWIDTH/5)-4,h=BOTPUCKH+5);
              rotate([0,-10,i+18]) translate([BOTWIDTH/2,0,-10]) cylinder(d=BOTWIDTH/12,h=BOTPUCKH+5);
         }        
