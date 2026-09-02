@@ -130,6 +130,11 @@ difference(){
         polygon([[0,0],[0,SHH*2],[SHD/2,SHH*2],[SHD,0],[0,0]]); // sunk screwhole
         polygon([[0,BOTPUCKH],[1+BOTWIDTH/2,BOTPUCKH],[0.5*TOL+BOTWIDTH/2,BOTPUCKH-3],[0,BOTPUCKH-3]]);//sunk bottle 
         }
+        // Holes for sideways flexibility, say 7 of them at a diameter such that they allmost take up the whole botom?
+        //
+        for(r=[0:360/7:360]) {
+            rotate([0,0,r]) translate([(1.1*BOTWIDTH)/3,0,-1]) cylinder(d=BOTWIDTH*0.2,h=BOTPUCKH+2);
+            }
 }
 }
     
