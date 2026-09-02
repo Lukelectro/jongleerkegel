@@ -36,7 +36,7 @@ HANDLEDIA_KNOB = 20;
 BOTTLE_WIDTH = 75;
 // bottom width (puck is slightly wider) (min size 15mm, but that is already ridiculously small)
 BOTWIDTH = 35;
-// bottom puck height (Minimum 10, because screw is inset 6)
+// bottom puck height (Minimum 10, because screw is inset 6, maximum 20-ish)
 BOTPUCKH = 12;
 //Diameter of top ball/knob
 KNOBDIA = 35;          
@@ -120,22 +120,38 @@ translate([0,0,0]) knob();
     }
 }
 
-// botom puck (Print in TPU with low infill, and thin walls, maybe 1 or 2 perimeters instead of 3):
-module bottompuck(){
-    SHH=3; //screw head height. *2 is inset, but 6 is OK
-difference(){
-        cylinder(d1=BOTWIDTH*1.1,d2=BOTWIDTH*1.2,h=BOTPUCKH);
-        cylinder(d=SD,h=BOTPUCKH); // schroefgat
+// botom puck (Print in TPU with low infill)
+module bottompuck(){ // from playjuggling bumpers, modified
+    $fs=0.5;
+     SHH=2; //screw head height. +3 for inset
+ difference(){
+        union(){
+        cylinder(d1=BOTWIDTH*1.1+BOTPUCKH/2,d2=BOTWIDTH*1.1,h=BOTPUCKH);
+                        
+        // buitenrand bumpers    
+        for(i=[0:18:360]){ 
+            rotate([0,0,i]) rotate_extrude(angle=9.5)
+                union(){
+                translate([1.1*BOTWIDTH/2+BOTPUCKH/2-1,BOTPUCKH/2]) difference() { 
+                    circle(BOTPUCKH/2); 
+                    circle((BOTPUCKH/2)-1); 
+                    } ;
+                 };
+            }
+        }
+            cylinder(d=SD,h=BOTPUCKH); // schroefgat
         rotate_extrude(){
-        polygon([[0,0],[0,SHH*2],[SHD/2,SHH*2],[SHD,0],[0,0]]); // sunk screwhole
+        #polygon([[0,0],[0,SHH+3],[SHD/2,SHH+3],[SHD,0],[0,0]]); // sunk screwhole
         polygon([[0,BOTPUCKH],[1+BOTWIDTH/2,BOTPUCKH],[0.5*TOL+BOTWIDTH/2,BOTPUCKH-3],[0,BOTPUCKH-3]]);//sunk bottle 
         }
-        // Holes for sideways flexibility, say 7 of them at a diameter such that they allmost take up the whole botom?
-        //
-        for(r=[0:360/7:360]) {
-            rotate([0,0,r]) translate([(1.1*BOTWIDTH)/3,0,-1]) cylinder(d=BOTWIDTH*0.2,h=BOTPUCKH+2);
-            }
-}
+            // holes for more flexibility:
+        for(i=[0:36:360]){
+            rotate([0,0,(i+18)]) translate([BOTWIDTH/3.5,0,-1]) cylinder(d=BOTWIDTH/6.5,h=BOTPUCKH+2);
+            rotate([0,-10,i]) translate([BOTWIDTH/2.2,0,-5]) cylinder(d1=BOTWIDTH/5, d2=(BOTWIDTH/5)-4,h=BOTPUCKH+5);
+             rotate([0,-10,i+18]) translate([BOTWIDTH/2,0,-10]) cylinder(d=BOTWIDTH/12,h=BOTPUCKH+5);
+        }        
+        
+        }
 }
     
     module knob(){
