@@ -26,7 +26,7 @@
 
 
 // bottle height
-BOTHEIGHT   = 250;     
+BOTHEIGHT   = 230;     
 // handle height. Total height is sum of bottle, handle, knob and puck - the amount the bottle is sunk into the puck and the amount the knob is sunk into the handle
 HANDLEHEIGHT = 250;
 // handle diameter, at the bottle end
@@ -49,7 +49,7 @@ KNOBDIA = 35;
 //Diameter of wooden dowel (trough the middle over full length: BOTHEIGHT+HANDLEHEIGHT+MIDRING);
 DOWELDIA = 18; // actually 18mm wood rod is slightly under, but if the printer overextrudes it still wo'nt fit, so maybe adjust this a bit
 // "length" (width, but it is in the length direction of the club) of middle ring.
-MIDRING = 5;
+MIDRING = 8;
 
 // middle bit length, to also tune weight, but do always keep at least 30 mm or so, because it needs to connect to the botle and handle.
 MBL = 25; 
