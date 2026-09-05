@@ -1,23 +1,28 @@
-// dit is een kladversie van een jongleerkegel - nog niet geprint.
+// Printable juggle club, in development / work in progress. Goal: a fuly parametric open source open hardware juggle pin. The world nees that like the open source violin XKCD jokes about (https://xkcd.com/743/). ;) :P
 
 // standard juggle clubs are 52 cm and weight about 200 grams - 240 grams. Slim clubs spin faster. Shorter clubs spin faster. Lighter clubs spin faster. Kids clubs are shorter and wider and lighter, and do not spin faster
 
-// So for a club that fits a standard backpack, it can be shorter, wider, and about the same weight, to
+// So for a club that fits a standard backpack, it can be shorter, wider, and about the same weight
 
-// Note/idea: 
-// print all parts seperately, bottle and neck in vase mode. (In something sturdy but with some give. PETG perhaps? TPU for the handle, knob and top (puck at the bottom)?)
-// Use a calibration piece in the middle between bottle and neck, weight calibration. Printed in PETG? Does not need to be soft, needs some weight.
-// Add a wooden dowel/rod through all (18 mm is een standaard diameter bij praxis, maar ik weet niet welke diameter er in het origineel zit. Op het oog zou het kunnen)
+// Print parts seperately. TPU for knob/top (bottom puck), TPU or nylon for handle, XT copolyester or PETG for bottle (or maybe ABS - not tested), PLA or anything rigid for middlebit. 
+
+// Middle bit length and infill can be tuned a bit to tune weight a bit. (fine tuning if dowel weight varies)
+
+// Tune weight distribution by handlelength / bottleheigth // middle bit lenght/weight, etc
+
+// Add a wooden dowel/rod through all (18 mm is a standard diameter in NL, at Praxis. Other countries idk)
+
+// Assembly: Pre-drill screwhole in the ends of the dowel, use drilljig to center. Put bottom puck (top) on bottle and dowel in bottle, fixate with screw. Slide middlebit over dowel and center in bottle, glue with hotglue to bottle. Remove exces glue on outside. Slide handle over dowel and fixate by screwing knob on.
 
 // See "how it is made" for Henry's delphin (circus expert visits their factory).
 
-//  How does the calibration middle piece work? Infill for more or less weight? addable weight? -- How about a longer piece for more weight, if more infill does not cut it?
-// Also: how to assemble? Middle bit to wooden dowel (glue?) and bottle/handle (it is locked in since both ends are fixed to the dowel by a screw through the knob and bottom puck. So a bit of (colored?) tape over it should be enough)
+// Tune size to taste and printer limits
 
-// Hah. Make it into a fuly parametric open source open hardware juggle pin :P like the open source violin XKCD jokes about (https://xkcd.com/743/).
-
-// TODO:
-// * tune size to printer limits (250 height is too much for my home printer, could maybe use the UM2+ extended at the makerspace (Zmax 305)?)
+// I Printed "fitsbackpack" size to test
+// handle in various materials, so far 0.7 mm vase mode Novamid 1030 nylon feels best. PETG and XT copolyster are too hard
+// bottle is 2mm XT copolyester or PETG, not vase mode but regular print.
+// Fitsbackpack center of gravity is slightly below handle end, in bottle. It weights about 180 a 190 grams and is about 43 cm long.
+// -- LJPV 2026
 
 
 // bottle height
@@ -48,8 +53,10 @@ MIDRING = 5;
 
 // middle bit length, to also tune weight, but do always keep at least 30 mm or so, because it needs to connect to the botle and handle.
 MBL = 25; 
-// wall thickness for printing. (In vase mode set this in slicer and put that value here too. In holow mode, set it here)
+// wall thickness for printing. (In vase mode set this in slicer and put that value here too. In holow mode, set it here) -- todo: seems to be off / double? Fine, as 2 mm is better anyway (for a bottle - handle rather 0.7).
 WALLTHICKNESS = 1; 
+
+
 // printing tolerance. Holes that a printed part has to fit in are made larger by this amount.
 TOL = 0.2; 
 
@@ -69,6 +76,8 @@ BOTTH = 3;
 // print which one? 0 = all, 1 = bottle, 2 = handle, 3 = puck, 4 = middlebit, 5= knob
 PWW = 0; 
 
+SPLODED = 1; // what distance for exploded view? (Set to 0 for assembled view, 10 or up for exploded view)
+
 // style of bottle: 0= 3 piece clasic, 1= only curve, 2 = curve on top, 3 = curve on botom, 4 = no curve / lowpoly, 5 = equal sections, 6=middlebulb, 7 = custom
 BOTSTYLE = 0; // [0:6]
  // limit choice in customizer panel: for a custom bottle edit the .scad
@@ -87,7 +96,7 @@ CBS_DIA2 = 20;
 
 
 if($preview){
-    SPLODED = 1; // what distance for exploded view? (Set to 0 for assembled view, 10 or up for exploded view)
+
 %translate([0,0,BOTPUCKH-3+SPLODED]) bottle();
 translate([0,0,BOTPUCKH-3+BOTHEIGHT+0.5*MIDRING+2*SPLODED]) middlebit(); //weight calibration piece in the middle
 %translate([0,0,BOTPUCKH-3+BOTHEIGHT+MIDRING+3*SPLODED]) handle();
@@ -143,7 +152,7 @@ module bottompuck(){ // from playjuggling bumpers, modified
         }
             cylinder(d=SD,h=BOTPUCKH); // schroefgat
         rotate_extrude(){
-        #polygon([[0,0],[0,SHH+3],[SHD/2,SHH+3],[SHD,0],[0,0]]); // sunk screwhole
+        polygon([[0,0],[0,SHH+3],[SHD/2,SHH+3],[SHD,0],[0,0]]); // sunk screwhole
         polygon([[0,BOTPUCKH],[1+BOTWIDTH/2,BOTPUCKH],[0.5*TOL+BOTWIDTH/2,BOTPUCKH-3],[0,BOTPUCKH-3]]);//sunk bottle 
         }
             // holes for more flexibility:
@@ -283,3 +292,8 @@ cylinder(d1=HANDLEDIA_BOT,d2=HANDLEDIA_KNOB,h=HANDLEHEIGHT);
 //test fit:
      *%cylinder(d=BOTTLE_WIDTH,h=1234);
     
+// output
+RODLENGTH = BOTHEIGHT+HANDLEHEIGHT+MIDRING-BOTTH; // lengte van stok
+TOTALLENGTH = BOTHEIGHT+HANDLEHEIGHT+MIDRING+BOTPUCKH-3+KNOBDIA-8  ;    // totale lengte (-3 sunk bottle, -8 sunk handle)
+echo (str("Length of wooden dowel = ", RODLENGTH));
+echo (str("Total lenght or juggle club = ", TOTALLENGTH));
