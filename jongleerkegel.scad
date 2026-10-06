@@ -4,7 +4,7 @@
 
 // So for a club that fits a standard backpack, it can be shorter, wider, and about the same weight
 
-// Print parts seperately. TPU for knob/top (bottom puck), TPU or nylon for handle, XT copolyester or PETG for bottle (or maybe ABS - not tested), PLA or anything rigid for middlebit. 
+// Print parts seperately. TPU or nylon for handle, XT copolyester or PETG for bottle (or maybe ABS - not tested), PLA or anything rigid for middlebit. And TPU for knob/top (bottom puck). Botom puck with no perimeters/only infill if you want it squishy-er. Kbob with 2 perimeters and low infill, like 5% gyroid or 10% stars. Experiment a bit for max squishyness in all directions. 
 
 // Middle bit length and infill can be tuned a bit to tune weight a bit. (fine tuning if dowel weight varies)
 
@@ -70,7 +70,7 @@ HOLLOW = true;
 
 //why are boolean check boxes not supported by thingiverse? Rather: Make this into another variable then...
 
-// bottom thickness when hollow
+// ADDED bottom thickness when hollow (So if WALLTHICKESS is 1 and this is 3, total bottom thickness is 4)
 BOTTH = 3;
 
 // print which one? 0 = all, 1 = bottle, 2 = handle, 3 = puck, 4 = middlebit, 5= knob
@@ -97,11 +97,11 @@ CBS_DIA2 = 20;
 
 if($preview){
 
-%translate([0,0,BOTPUCKH-3+SPLODED]) bottle();
-translate([0,0,BOTPUCKH-3+BOTHEIGHT+0.5*MIDRING+2*SPLODED]) middlebit(); //weight calibration piece in the middle
-%translate([0,0,BOTPUCKH-3+BOTHEIGHT+MIDRING+3*SPLODED]) handle();
-translate([0,0,BOTPUCKH-3+BOTHEIGHT+MIDRING+HANDLEHEIGHT+0.33*KNOBDIA+4*SPLODED]) knob();
-bottompuck();
+translate([0,0,BOTPUCKH-3+SPLODED]) color("lightblue",1)bottle();
+translate([0,0,BOTPUCKH-3+BOTHEIGHT+0.5*MIDRING+2*SPLODED]) color("orange") middlebit(); //weight calibration piece in the middle
+translate([0,0,BOTPUCKH-3+BOTHEIGHT+MIDRING+3*SPLODED]) color("white",0.3) handle();
+translate([0,0,BOTPUCKH-3+BOTHEIGHT+MIDRING+HANDLEHEIGHT+0.33*KNOBDIA+4*SPLODED]) color("white",0.7) knob();
+color("white",0.9)bottompuck();
 }
 else
 {
@@ -169,9 +169,15 @@ module bottompuck(){ // from playjuggling bumpers, modified
          SHH=6; //SHH=screw head height. *2 is inset. Leave at 5 or 6 or so.
         difference(){
         sphere(d=KNOBDIA);
-        translate([0,0,-0.5*KNOBDIA-1]) cylinder(d=SD,h=KNOBDIA+2);
-        translate([0,0,0.5*KNOBDIA-(2*SHH)]) cylinder(d1=SHD,d2=SHD+2,h=SHH*4);
-        translate([0,0,-0.5*KNOBDIA]) cylinder(d1=HANDLEDIA_KNOB+1,d2=HANDLEDIA_KNOB+TOL/2,h=8);    
+        translate([0,0,-0.5*KNOBDIA-1]) cylinder(d=SD,h=KNOBDIA+2);//schroefdraadgat
+        translate([0,0,0.5*KNOBDIA-(3*SHH)]) cylinder(d1=SHD,d2=SHD+2,h=SHH*2+1); //schroefkopgat
+        translate([0,0,0.5*KNOBDIA-(2.5*SHH)]) cylinder(d1=SHD,d2=SHD+8,h=SHH); //schroefkopgat, extra flexibiliteit 
+    translate([0,0,0.5*KNOBDIA-1.5*SHH-0.1]) cylinder(d1=SHD+8,d2=SHD+2,h=SHH); //schroefkopgat, extra flexibiliteit   
+        translate([0,0,-0.5*KNOBDIA]) cylinder(d1=HANDLEDIA_KNOB+1,d2=HANDLEDIA_KNOB+TOL/2,h=8); //inset at bottom 
+          //Half for preview, to see inside
+          if($preview){
+              translate([0,-0.5*KNOBDIA,-0.5*KNOBDIA]) cube(KNOBDIA);
+              }  
             }
         }
         
@@ -264,7 +270,7 @@ difference(){
     // TODO: now bottlepoly containts the full 2d shape of the bottle, it can be made hollow as well, so there is no need to specify vase mode printing (while vase mode printing remains possible still)
 
 if(HOLLOW){
-    rotate_extrude(angle=360){
+    rotate_extrude(angle= $preview?180:360){ // only half in previeuw, so you can see where the rod goes
     difference(){ 
     polygon(bottlepoly);
     offset(-WALLTHICKNESS) polygon(bottlepoly);
@@ -289,11 +295,15 @@ module handle(){
 } else
 cylinder(d1=HANDLEDIA_BOT,d2=HANDLEDIA_KNOB,h=HANDLEHEIGHT);
 }
-//test fit:
-     *%cylinder(d=BOTTLE_WIDTH,h=1234);
     
 // output
-RODLENGTH = BOTHEIGHT+HANDLEHEIGHT+MIDRING-BOTTH; // lengte van stok
-TOTALLENGTH = BOTHEIGHT+HANDLEHEIGHT+MIDRING+BOTPUCKH-3+KNOBDIA-8  ;    // totale lengte (-3 sunk bottle, -8 sunk handle)
+RODLENGTH = BOTHEIGHT-BOTTH+HANDLEHEIGHT+MIDRING; // lengte van stok (BOTTH+WALLTHICKNESS-WALLTHICKNESS want die komt er aan de bovenkant weer bij)
+TOTALLENGTH = BOTHEIGHT+WALLTHICKNESS+HANDLEHEIGHT+MIDRING+BOTPUCKH-3+KNOBDIA-8  ;    // totale lengte (-3 sunk bottle, -8 sunk handle, +WALLTHICKNESS omdat dat aan de buitenkant van de fles erbij komt)
 echo (str("Length of wooden dowel = ", RODLENGTH));
 echo (str("Total lenght or juggle club = ", TOTALLENGTH));
+
+//test fit:
+if($preview){
+    // dowel stands on bottom of bottle, which is inset 3 mm into bottom puck. Bottom of bottle is BOTTH+WALLTHICKNESS thick. 
+    translate([0,0,BOTTH+WALLTHICKNESS+BOTPUCKH-3]) color("brown") cylinder(d=DOWELDIA,h=RODLENGTH);
+    }
